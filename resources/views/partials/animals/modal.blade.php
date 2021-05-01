@@ -13,17 +13,21 @@
         </div>
         <div class="mt-4">
           <h5>
-            {{ $animal->description }}
+            {!! $animal->description !!}
           </h5>
         </div>
       </div>
       <div class="modal-footer">
-        <a href="/animals/dogs/{{ $animal->id }}">
+        <a href="/animals/{{ $animal->menu->route }}/{{ $animal->id }}">
           <button type="button" class="btn btn-secondary">Megtekintés</button>
         </a>
         @if (Auth::user() && ($animal->user_id == Auth::user()->id || Auth::user()->role_id == 3))
-          <button type="button" class="btn btn-primary">Szerkesztés</button>
+          @if (!$animal->adopted)
+          <a href="/animals/{{ $animal->menu->route }}/{{ $animal->id }}/edit">
+            <button type="button" class="btn btn-primary">Szerkesztés</button>
+          </a>
           <button type="button" class="btn btn-danger">Törlés</button>
+          @endif
         @endif
       </div>
     </div>

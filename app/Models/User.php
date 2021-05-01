@@ -20,7 +20,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id'
+        'role_id',
+        'bio',
+        'avatar_uri'
     ];
 
     /**
@@ -47,5 +49,28 @@ class User extends Authenticatable
     public function role()
     {
         return $this->hasOne(Role::class);
+    }
+
+    public function animal()
+    {
+        return $this->belongsTo(Animal::class);
+    }
+
+    public function adoptions()
+    {
+        return $this->hasMany(Adoption::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function likesById($animal_id)
+    {
+        return $this->likes()
+            ->where('animal_id', $animal_id)
+            ->where('user_id', $this->id)
+            ->first();
     }
 }

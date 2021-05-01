@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+
 
 class Animal extends Model
 {
@@ -15,18 +17,16 @@ class Animal extends Model
 
     protected $fillable = [
         'title',
-        'title',
         'description',
-        'dog_of_the_week',
+        'animal_of_the_week',
         'adopted',
-        'category_id',
         'user_id',
         'animal_type_id',
         'menu_id',
     ];
 
     protected $casts = [
-        'dog_of_the_week' => 'boolean',
+        'animal_of_the_week' => 'boolean',
         'adopted' => 'boolean'
     ];
     
@@ -35,24 +35,19 @@ class Animal extends Model
         parent::boot();
         self::creating(function ($model) {
             $model->id = Str::uuid()->toString();
-            $model->dog_of_the_week = false;
+            // $model->animal_of_the_week = false;
             $model->adopted = false;
         });
     }
 
     public function menu()
     {
-        return $this->hasOne(Menu::class);
+        return $this->belongsTo(Menu::class);
     }
 
     public function animalType()
     {
-        return $this->hasOne(AnimalType::class);
-    }
-
-    public function category()
-    {
-        return $this->hasOne(Category::class);
+        return $this->belongsTo(AnimalType::class);
     }
 
     public function user()
@@ -63,5 +58,28 @@ class Animal extends Model
     public function images()
     {
         return $this->hasMany(Image::class);
+    }
+
+    public function adoptions()
+    {
+        return $this->hasMany(Adoption::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function likesCount()
+    {
+        return $this->likes()
+            ->selectRaw('animal_id, count(*) as totalLikes')
+            ->groupBy('animal_id');
+    }
+
+    public function likedByMe()
+    {
+        return $this->likes()
+            ->where('user_id', Auth::user()->id);
     }
 }
