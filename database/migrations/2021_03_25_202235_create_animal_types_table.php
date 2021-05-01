@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMenusTable extends Migration
+class CreateAnimalTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateMenusTable extends Migration
      */
     public function up()
     {
-        Schema::create('menus', function (Blueprint $table) {
-            $table->id();
-            $table->string('route');
-            $table->string('name');
-            $table->string('parent')->default('');
-            $table->string('role_id');
+        Schema::create('animal_types', function (Blueprint $table) {
+            $table->uuid('id')->index();
+            $table->string('name', 40);
+            $table->longText('description');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateMenusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('animal_types');
     }
 }

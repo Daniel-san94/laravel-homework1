@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class Image extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'route',
-        'name',
-        'parent',
+        'filename',
+        'main',
     ];
 
     protected $hidden = [
@@ -19,13 +19,12 @@ class Menu extends Model
         'updated_at'
     ];
 
-    public function role()
-    {
-        return $this->hasOne(Role::class);
-    }
+    protected $casts = [
+        'main' => 'boolean'
+    ];
 
-    public function category()
+    public function animal()
     {
-        return $this->hasOne(Category::class);
-    }
+        return $this->belongsTo(Animal::class);
+    }    
 }
