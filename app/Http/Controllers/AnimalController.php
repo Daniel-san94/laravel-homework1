@@ -15,9 +15,17 @@ use App\Models\Image;
 use App\Models\AnimalType;
 use App\Models\Adoption;
 
+use Jenssegers\Date\Date;
+
 
 class AnimalController extends Controller
 {
+
+    public function __construct()
+    {
+        Date::setLocale('hu');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,14 +34,45 @@ class AnimalController extends Controller
      */
     public function index(Request $request, $page)
     {
+        $searchFor = $request->query('t');
+        $filter_by = $request->query('filter');
+        $order = $request->query('order');
+
+        // if (($filter_by && ($filter_by != 'created_at' || $filter_by != 'title')) && 
+        // ($order && ($order != 'desc' || $order != 'asc'))) {
+        //     return redirect('home')->with('error', 'Érvénytelen url');
+        // }
+
         $menu = Menu::where('route', $page)->first();
+        if (!$menu) {
+            return redirect('home')->with('error', 'A megnyitni próbált oldal nem létezik, ezért visszairányítottunk a főoldalra');
+        }
         // in front-end I will check if user has access to create this kind of advertisement or not
         $create_menu = Menu::where('route', $page . '/create')->first();
         $create_button_role_id = $create_menu->role_id;
         // redirect if not exists
         $category = Category::with('menu')->where('menu_id', $menu->id)->first();
-        // joinolni a tablakat!!!!
-        $animals = Animal::with('images', 'animalType', 'menu', 'likesCount')->where('menu_id', $menu->id)->where('adopted', false)->get();
+        $animals = Animal::with('images', 'animalType', 'menu', 'likesCount')
+            ->where('menu_id', $menu->id)
+            ->where('adopted', false);
+
+        if ($searchFor) {
+            $animals = $animals->where(function ($q) use ($searchFor) {
+                $q->where('title', 'like', "%{$searchFor}%")
+                    ->orWhere('description', 'like', "%{$searchFor}%");
+            });
+        }
+        if ($filter_by) {
+            if ($order) {
+                $animals = $animals->orderBy($filter_by, $order)->get();
+            } else {
+                $animals = $animals->orderBy($filter_by, 'DESC')->get();
+            }
+        } elseif ($order) {
+            $animals = $animals->orderBy('updated_at', $order)->get();
+        } else {
+            $animals = $animals->orderBy('updated_at', 'DESC')->get();
+        }
         return view('pages/animals', compact('animals', 'category', 'menu', 'create_button_role_id'));
     }
 
@@ -43,7 +82,7 @@ class AnimalController extends Controller
      */
     public function create($page)
     {
-        $animal_types = AnimalType::all();
+        $animal_types = AnimalType::orderBy('name')->get();
         return view('pages/create_animal', compact('animal_types', 'page'));
     }
 
@@ -161,10 +200,8 @@ class AnimalController extends Controller
      */
     public function edit($page, $id)
     {
-        $animal = Animal::with('images')->where('id', $id)->first();
-        $menu = Menu::where('id', $animal->menu_id)->first();
-        $animal->{"menu"} = $menu;
-        $animal_types = AnimalType::all();
+        $animal = Animal::with('images', 'menu')->where('id', $id)->first();
+        $animal_types = AnimalType::orderBy('name',)->get();
         return view('pages/edit_animal', compact('animal', 'page', 'animal_types'));
     }
 
@@ -283,10 +320,34 @@ class AnimalController extends Controller
         return redirect('home')->with('success', 'Sikeresen töröltük a hirdetést az adatbázisból.');
     }
 
-    public function successStories() {
-        $animals = Animal::with('images', 'menu', 'animalType')->where('adopted', true)->get();
-        $category = Category::with('menu')->where('id', 4)->first();
-        // ez igy nem helyes, csinald vissza a modelt es joinold ezt
+    public function successStories(Request $request) {
+        $searchFor = $request->query('t');
+        $filter_by = $request->query('filter');
+        $order = $request->query('order');
+
+        $animals = Animal::with('images', 'animalType', 'menu', 'likesCount')
+            ->where('adopted', true);
+
+        if ($searchFor) {
+            $animals = $animals->where(function ($q) use ($searchFor) {
+                $q->where('title', 'like', "%{$searchFor}%")
+                    ->orWhere('description', 'like', "%{$searchFor}%");
+            });
+        }
+        if ($filter_by) {
+            if ($order) {
+                $animals = $animals->orderBy($filter_by, $order)->get();
+            } else {
+                $animals = $animals->orderBy($filter_by, 'DESC')->get();
+            }
+        } elseif ($order) {
+            $animals = $animals->orderBy('updated_at', $order)->get();
+        } else {
+            $animals = $animals->orderBy('updated_at', 'DESC')->get();
+        }
+
+
+        $category = Category::with('menu')->where('id', 6)->first();
         if (!$animals || !$category) {
             return redirect('home')->with('error', 'Az oldal jelenleg nem elérhető, ezért visszairányítottunk a főoldalra..');
         }
@@ -298,7 +359,7 @@ class AnimalController extends Controller
         if (!$animal) {
             return redirect('home')->with('error', 'Adatbázis hiba, kérünk próbálkozz később.');
         }
-        return view('pages/adopted', compact('animal'));
+        return view('pages/animal', compact('animal'));
     }
 
     public function adopt($page, $id) {
@@ -313,24 +374,21 @@ class AnimalController extends Controller
     }
 
     public function withdrawAdopt($id) {
-        $animal = Animal::where('id', $id)->first();
+        $animal = Animal::with('menu')->where('id', $id)->first();
         if (!$animal) {
             return redirect()->back()->with('error', 'Adatbázis hiba, kérünk próbálkozz később.');
         }
-        $menu = Menu::where('id', $animal->menu_id)->first();
         $animal->adopted = false;
         $animal->save();
-        return redirect($menu->route . '/' . $id)->with('success', 'Visszavontuk a befogadást a rendszerünkben.');
+        return redirect($animal->menu->route . '/' . $id)->with('success', 'Visszavontuk a befogadást a rendszerünkben.');
     }
 
     public function animalOfWeek () {
-        $animal = Animal::with('images')->where('animal_of_the_week', true)->first();
+        $animal = Animal::with('images', 'menu')->where('animal_of_the_week', true)->first();
         if (!$animal) {
             return redirect('home')->with('error', 'Adatbázis hiba, kérünk próbálkozz később.');
         }
-        $menu = Menu::where('id', $animal->menu_id)->first();
-        $animal->{"menu"} = $menu;
-        $split = explode('/',$menu->route);
+        $split = explode('/',$animal->menu->route);
         $page = end($split);
 
         $adoptionRequest = null;

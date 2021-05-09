@@ -1,0 +1,336 @@
+/* Generic */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.special-input-error {
+  border: 1.5px solid #ff7851;
+  border-radius: 8px;
+  z-index: 2;
+}
+
+/* Global Messages From Server */
+#message-from-server > div:first-child {
+  top: -30px; 
+  right: 25%; 
+  z-index: 10000; 
+  box-shadow: 
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, 
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, 
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+#message-from-server > button {
+  top: -30px; 
+  right: 27%; 
+  z-index: 11000;
+}
+
+@media (max-width: 800px) {
+  #message-from-server > div:first-child {
+    width: 90% !important;
+    right: 5% !important;
+  }
+  #message-from-server > button {
+    right: 8% !important;
+  }
+}
+
+
+ /* Contact Details page */
+@media (max-width: 1020px) {
+  #contact-form-container {
+    width: 75% !important;
+  }
+}
+@media (max-width: 600px) {
+  #contact-form-container {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 750px) {
+  .contact-details-container {
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .contact-details-container > div:nth-child(2) {
+    margin-top: 3rem;
+  }
+}
+
+
+/* Search Component */
+.optionbox {
+  position: relative;
+}
+.optionbox select {
+    color: #fff;
+    padding: 10px;
+    width: 200px;
+    height: 50px;
+    border: none;
+    font-size: 20px;
+    -webkit-appearance: button;
+    outline: none
+}
+.optionbox select:hover {
+  cursor: pointer;
+}
+
+.optionbox:before {
+    content: '\f358';
+    font-family: "Font Awesome 5 free";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    font-size: 30px;
+    pointer-events: none
+}
+
+.secondary-color-select select {
+  background: #F3969A;
+}
+
+.secondary-color-select select:focus {
+  background: #F3969A;
+}
+
+.secondary-color-select:before {
+  background: #F3969A;
+}
+
+.primary-color-select select {
+  background: #78C2AD;
+}
+
+.primary-color-select select:focus {
+  background: #78C2AD;
+}
+
+.primary-color-select:before {
+  background: #78C2AD;
+}
+
+#search-input {
+  font-size: 25px;
+  color: #78C2AD;
+}
+
+@media (max-width: 1200px) {
+  .optionbox select {
+    width: 150px;
+    font-size: 18px;
+  }
+  .optionbox:before {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 1000px) {
+  #search-fields {
+    width: 95% !important;
+  }
+}
+
+/* Info_card component */
+.info-card {
+  min-width: 17rem; 
+  max-width: 21rem; 
+  box-shadow: 0 0 10px 4px rgba(0, 0, 0, .15);
+}
+.info-card-img-container {
+  border-radius: 6px 6px 0 0; 
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(94, 182, 157, 0.3) 0px 18px 36px -18px inset;
+}
+
+.info-card-img-container > img {
+  border-radius: 6px 6px 0 0; 
+  height: 12rem; 
+  width: auto; 
+  max-width: 100%;
+}
+
+/* Social Share */
+#social-links > ul {
+  margin-bottom: 0;
+  padding: 5px;
+  padding-left: 10px;
+  padding-bottom: 3px;
+}
+.social-icons > span {
+  font-size: 30px;
+}
+
+.social-popover {
+  top: -40px; 
+  left: -75px; 
+  width: 220px; 
+  z-index: 1000;
+}
+
+.facebook {
+  color: #3b5998;
+}
+.twitter {
+  color: #00aced;
+}
+.whatsapp {
+  color: #25d366;
+}
+.pinterest {
+  color: #cb2027;
+}
+.reddit {
+  color: #ff5700;
+}
+
+/* Animals Jumbotron */
+.animals-jumbotron-title {
+  background-color: rgba(0, 0, 0, 0.5); 
+  border-inline-start: 1rem solid; 
+  border-inline-start-color: #78C2AD;
+}
+
+.animals-jumbotron-description {
+  background-color: rgba(0, 0, 0, 0.5); 
+  border-inline-end: 1rem solid; 
+  border-inline-end-color: #78C2AD;
+}
+
+@media (max-width: 970px) {
+  .animals-jumbotron-description {
+    font-size: 1rem;
+  }
+}
+
+.create-advertisement-button {
+  bottom: 40px;
+  right: 40px; 
+  z-index: 1000; 
+  padding: 10px; 
+  font-size: 40px; 
+  border-radius: 50%; 
+  box-shadow: 0 0 10px 4px rgba(0, 0, 0, .15);
+}
+
+/* Animal Type Page */
+.animal-type-border-bottom {
+  box-shadow: rgba(234, 79, 86, 0.4) 0px 30px 60px -12px inset, rgba(234, 79, 86, 0.3) 0px 18px 36px -18px inset;
+}
+
+/* Advertisement pages */
+.animal-card {
+  max-width: 1000px; 
+  box-shadow: 
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, 
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, 
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+@media (max-width: 700px) {
+  .animal-action-container {
+    flex-direction: column;
+  }
+}
+
+.animal-photos {
+  line-height: 0;
+  -webkit-column-count: 2;
+  -webkit-column-gap:   20px;
+  -moz-column-count:    2;
+  -moz-column-gap:      20px;
+  column-count:         2;
+  column-gap:           20px;  
+}
+
+.animal-photos img {
+width: 100% !important;
+height: auto !important;
+max-height: 500px;
+object-fit: cover;
+margin-bottom: 10px;  
+}
+
+@media (max-width: 600px) {
+.animal-photos {
+-moz-column-count:    1;
+-webkit-column-count: 1;
+column-count:         1;
+}
+}
+
+
+/* Gallery Page */
+.details-button {
+  display: none;
+}
+
+.gallery-image:hover + .details-button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.details-button:hover {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#photos {
+  line-height: 0;
+  -webkit-column-count: 4;
+  -webkit-column-gap:   10px;
+  -moz-column-count:    4;
+  -moz-column-gap:      10px;
+  column-count:         4;
+  column-gap:           10px;  
+}
+
+#photos img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 500px;
+  object-fit: cover;
+  margin-bottom: 10px;  
+}
+
+@media (max-width: 1200px) {
+  #photos {
+  -moz-column-count:    3;
+  -webkit-column-count: 3;
+  column-count:         3;
+  }
+}
+
+@media (max-width: 1000px) {
+  #photos {
+  -moz-column-count:    2;
+  -webkit-column-count: 2;
+  column-count:         2;
+  }
+}
+@media (max-width: 500px) {
+  #photos {
+  -moz-column-count:    1;
+  -webkit-column-count: 1;
+  column-count:         1;
+  }
+}

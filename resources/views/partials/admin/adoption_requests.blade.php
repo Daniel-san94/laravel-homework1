@@ -1,6 +1,6 @@
 <div class="mt-5 container-fluid">
     <h2>{{ $title }}</h2>
-    <table class="table mt-3">
+    <table class="table mt-3 table-striped">
         <thead>
             <tr>
               <th scope="col">Hirdetés címe</th>
@@ -60,10 +60,4 @@
             @endforeach            
         </tbody>
     </table>
-    @if(!empty(Session::get('success')))
-        <div class="alert alert-success"> {{ Session::get('success') }}</div>
-    @endif
-    @if(!empty(Session::get('error')))
-        <div class="alert alert-danger"> {{ Session::get('error') }}</div>
-    @endif
   </div>

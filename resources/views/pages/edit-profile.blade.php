@@ -59,7 +59,7 @@
             <div class="form-group row">
               <label for="image" class="col-md-2 col-form-label text-md-right">{{ __('Profilkép') }}</label>
               <div class="col-md-10">
-                <div class="input-group">
+                <div class="input-group @error('image') special-input-error @enderror">
                   <div class="custom-file" style="@error('images') border: 1px solid red; @enderror">
                     <input type="file" class="custom-file-input" id="image" name="image" accept="image/*">
                     <label class="custom-file-label" for="image" id="file-name"></label>
@@ -79,15 +79,7 @@
               </div>   
               </div>
             </div>
-
-
-            @if(!empty(Session::get('success')))
-              <div class="alert alert-success"> {{ Session::get('success') }}</div>
-            @endif
-            @if(!empty(Session::get('error')))
-              <div class="alert alert-danger"> {{ Session::get('error') }}</div>
-            @endif
-            <div class="form-group mb-0">
+            <div class="mb-0 form-group">
               <div class="d-flex justify-content-end">
                   <button type="submit" class="btn btn-primary d-block">
                       {{ __('Profil Módosítása') }}

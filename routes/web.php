@@ -9,6 +9,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ContactFormController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,10 +62,22 @@ Route::group(['middleware' => 'getMenu'], function(){
             Route::get('/admin-dashboard/create-species', [AdminController::class, 'createSpecies'])->name('show.create.species');
             Route::post('/create-species', [AnimalTypeController::class, 'create'])->name('create.species');
             Route::get('/admin-dashboard/species-list', [AdminController::class, 'animalTypes'])->name('anymal.types');
+            Route::get('/admin-dashboard/contact_messages', [AdminController::class, 'contactMessages'])->name('contact.messages');
             Route::get('/type/{id}/edit', [AnimalTypeController::class, 'show'])->name('anymal.type.show');
             Route::put('/type/{id}/edit', [AnimalTypeController::class, 'edit'])->name('animal.type.edit');
             Route::delete('/type/{id}/delete', [AnimalTypeController::class, 'destroy'])->name('animal.type.delete');
         });
+
+        Route::post('/add-review', [ReviewController::class, 'addReview'])->name('add.review');
+        Route::post('/edit-review', [ReviewController::class, 'editReview'])->name('edit.review');
+        Route::get('/messages/{type}', [MessageController::class, 'index'])->name('show.messages');
+        Route::get('/messages/{type}/{id}', [MessageController::class, 'showMessage'])->name('show.message');
+        Route::put('/archive-messages{id}', [MessageController::class, 'archiveMessage'])->name('archive.message');
+        Route::put('/revert-archive-message/{id}', [MessageController::class, 'revertArchiveMessage'])->name('revert.archive.message');
+        Route::put('/trash-message/{id}', [MessageController::class, 'trashMessage'])->name('trash.message');
+        Route::put('/revert-trash-message/{id}', [MessageController::class, 'revertTrashMessage'])->name('revert.trash.message');
+        Route::put('/read-message/{id}', [MessageController::class, 'readMessage'])->name('read.message');
+        Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('send.message');
     });
  
     Route::get('/animals/{page}', [AnimalController::class, 'index'])->name('show.list.pages');
@@ -73,6 +87,9 @@ Route::group(['middleware' => 'getMenu'], function(){
     Route::get('/gallery', [ImageController::class, 'gallery'])->name('gallery');
     Route::get('/animal-of-week', [AnimalController::class, 'animalOfWeek'])->name('animal.of.week');
     Route::get('/type/{type_id}', [AnimalTypeController::class, 'index'])->name('anymal.type');
+    Route::view('/about-us', 'pages.about_us')->name('about.us');
+    Route::get('/about-us/contact-details', [ContactFormController::class, 'index'])->name('contact.details');
+    Route::post('/send-message-to-admin', [ContactFormController::class, 'sendMessage'])->name('send.message.admin');
     Route::get('/about-us/reviews', [ReviewController::class, 'index'])->name('reviews');
 });
 
