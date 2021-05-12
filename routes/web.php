@@ -53,7 +53,7 @@ Route::group(['middleware' => 'getMenu'], function(){
 
         Route::middleware('isAdmin')->group(function () {
             Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-            Route::get('/admin-dashboard/adoption/{type}', [AdminController::class, 'adoptions'])->name('admin.adoption');
+            Route::get('/admin-dashboard/adoption/{type}/{days}', [AdminController::class, 'adoptions'])->name('admin.adoption');
             Route::put('approve-adoption/{id}', [AdoptionController::class, 'approveAdoption'])->name('approve.adoption');
             Route::put('reject-adoption/{id}', [AdoptionController::class, 'rejectAdoption'])->name('reject.adoption');
             Route::put('revert-rejection/{id}', [AdoptionController::class, 'revertAdoptionRejection'])->name('revert.adoption.rejection');
@@ -61,8 +61,12 @@ Route::group(['middleware' => 'getMenu'], function(){
     
             Route::get('/admin-dashboard/create-species', [AdminController::class, 'createSpecies'])->name('show.create.species');
             Route::post('/create-species', [AnimalTypeController::class, 'create'])->name('create.species');
-            Route::get('/admin-dashboard/species-list', [AdminController::class, 'animalTypes'])->name('anymal.types');
-            Route::get('/admin-dashboard/contact_messages', [AdminController::class, 'contactMessages'])->name('contact.messages');
+            Route::get('/admin-dashboard/species-list', [AdminController::class, 'animalTypes'])->name('animal.types');
+            Route::get('/admin-dashboard/contact_messages/{type}/{days}', [AdminController::class, 'contactMessages'])->name('contact.messages');
+            Route::get('/admin-dashboard/contact_message/{id}', [AdminController::class, 'contactMessage'])->name('contact.message');
+            Route::put('/admin-dashboard/read/contact_message/{id}', [ContactFormController::class, 'readContactMessage'])->name('read.contact.message');
+            Route::put('/admin-dashboard/complete/contact_message/{id}', [ContactFormController::class, 'completeContactMessage'])->name('complete.contact.message');
+            Route::put('/admin-dashboard/revert-complete/contact_message/{id}', [ContactFormController::class, 'revertCompleteContactMessage'])->name('revert.complete.contact.message');
             Route::get('/type/{id}/edit', [AnimalTypeController::class, 'show'])->name('anymal.type.show');
             Route::put('/type/{id}/edit', [AnimalTypeController::class, 'edit'])->name('animal.type.edit');
             Route::delete('/type/{id}/delete', [AnimalTypeController::class, 'destroy'])->name('animal.type.delete');
